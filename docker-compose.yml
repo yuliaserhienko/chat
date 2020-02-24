@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: ./manage.py runserver 0.0.0.0:8000
+    volumes:
+    - .:/app
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+    - 8000:8000
+
+  db:
+    image: library/postgres:11.1-alpine
+    restart: unless-stopped
+    volumes:
+      - ../db:/var/lib/postgresql
+    ports:
+    - 5432:5432
+    environment:
+      - POSTGRES_DB=chat
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
