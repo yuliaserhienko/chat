@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 
 class AuthorManager(models.Manager):
     def get_unauthenticated(self):
         return super().get_queryset().get_or_create(
-            username='unauthenticated_user'
+            username=settings.UNAUTHENTICATED_USERNAME
         )[0]
 
 
